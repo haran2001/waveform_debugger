@@ -1,0 +1,5 @@
+32-bit CPU, single-issue, single core.
+Classic five-stage RISC pipeline. Strictly in-order pipeline.
+Compliant to RV32I User-Level ISA v2.2. Supports all 37 base instructions.
+Separate bus interface for Instruction & Data memory access. (Why? To be discussed in future…)
+Intended for baremetal applications, not OS and interrupt capable. (Limitations rather!)
