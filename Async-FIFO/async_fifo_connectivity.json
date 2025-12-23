@@ -1,0 +1,1389 @@
+{
+  "creator": "Yosys 0.60 (git sha1 5bafeb77dc71e054fa331ab9efa613e6fb0a1c49, clang++ 17.0.0 -fPIC -O3)",
+  "modules": {
+    "$paramod$be1290108f2457d10005154092f37665c723e177\\FIFO_memory": {
+      "attributes": {
+        "dynports": "00000000000000000000000000000001",
+        "hdlname": "FIFO_memory",
+        "src": "Async-FIFO/FIFO_memory.v:13.1-29.10"
+      },
+      "parameter_default_values": {
+        "ADDR_SIZE": "00000000000000000000000000000100",
+        "DATA_SIZE": "00000000000000000000000000001000"
+      },
+      "ports": {
+        "rdata": {
+          "direction": "output",
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9 ]
+        },
+        "wdata": {
+          "direction": "input",
+          "bits": [ 10, 11, 12, 13, 14, 15, 16, 17 ]
+        },
+        "waddr": {
+          "direction": "input",
+          "bits": [ 18, 19, 20, 21 ]
+        },
+        "raddr": {
+          "direction": "input",
+          "bits": [ 22, 23, 24, 25 ]
+        },
+        "wclk_en": {
+          "direction": "input",
+          "bits": [ 26 ]
+        },
+        "wfull": {
+          "direction": "input",
+          "bits": [ 27 ]
+        },
+        "wclk": {
+          "direction": "input",
+          "bits": [ 28 ]
+        }
+      },
+      "cells": {
+        "$logic_and$Async-FIFO/FIFO_memory.v:27$67": {
+          "hide_name": 1,
+          "type": "$logic_and",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:27.13-27.30"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 26 ],
+            "B": [ 29 ],
+            "Y": [ 30 ]
+          }
+        },
+        "$logic_not$Async-FIFO/FIFO_memory.v:27$66": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:27.24-27.30"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 27 ],
+            "Y": [ 29 ]
+          }
+        },
+        "$procmux$74": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "Async-FIFO/FIFO_memory.v:27.13-27.30|Async-FIFO/FIFO_memory.v:27.9-27.52"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 30 ],
+            "Y": [ 31 ]
+          }
+        },
+        "$procmux$77": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000001000"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "Async-FIFO/FIFO_memory.v:27.13-27.30|Async-FIFO/FIFO_memory.v:27.9-27.52"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "x", "x", "x", "x", "x", "x", "x", "x" ],
+            "B": [ 10, 11, 12, 13, 14, 15, 16, 17 ],
+            "S": [ 30 ],
+            "Y": [ 32, 33, 34, 35, 36, 37, 38, 39 ]
+          }
+        },
+        "$procmux$80": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000100"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "Async-FIFO/FIFO_memory.v:27.13-27.30|Async-FIFO/FIFO_memory.v:27.9-27.52"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "x", "x", "x", "x" ],
+            "B": [ 18, 19, 20, 21 ],
+            "S": [ 30 ],
+            "Y": [ 40, 41, 42, 43 ]
+          }
+        },
+        "mem": {
+          "hide_name": 0,
+          "type": "$mem_v2",
+          "parameters": {
+            "ABITS": "00000000000000000000000000000100",
+            "INIT": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "MEMID": "\\mem",
+            "OFFSET": "00000000000000000000000000000000",
+            "RD_ARST_VALUE": "xxxxxxxx",
+            "RD_CE_OVER_SRST": "0",
+            "RD_CLK_ENABLE": "0",
+            "RD_CLK_POLARITY": "0",
+            "RD_COLLISION_X_MASK": "0",
+            "RD_INIT_VALUE": "xxxxxxxx",
+            "RD_PORTS": "00000000000000000000000000000001",
+            "RD_SRST_VALUE": "xxxxxxxx",
+            "RD_TRANSPARENCY_MASK": "0",
+            "RD_WIDE_CONTINUATION": "0",
+            "SIZE": "00000000000000000000000000010000",
+            "WIDTH": "00000000000000000000000000001000",
+            "WR_CLK_ENABLE": "1",
+            "WR_CLK_POLARITY": "1",
+            "WR_PORTS": "00000000000000000000000000000001",
+            "WR_PRIORITY_MASK": "0",
+            "WR_WIDE_CONTINUATION": "0"
+          },
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:22.25-22.28"
+          },
+          "port_directions": {
+            "RD_ADDR": "input",
+            "RD_ARST": "input",
+            "RD_CLK": "input",
+            "RD_DATA": "output",
+            "RD_EN": "input",
+            "RD_SRST": "input",
+            "WR_ADDR": "input",
+            "WR_CLK": "input",
+            "WR_DATA": "input",
+            "WR_EN": "input"
+          },
+          "connections": {
+            "RD_ADDR": [ 22, 23, 24, 25 ],
+            "RD_ARST": [ "0" ],
+            "RD_CLK": [ "x" ],
+            "RD_DATA": [ 2, 3, 4, 5, 6, 7, 8, 9 ],
+            "RD_EN": [ "1" ],
+            "RD_SRST": [ "0" ],
+            "WR_ADDR": [ 40, 41, 42, 43 ],
+            "WR_CLK": [ 28 ],
+            "WR_DATA": [ 32, 33, 34, 35, 36, 37, 38, 39 ],
+            "WR_EN": [ 31, 31, 31, 31, 31, 31, 31, 31 ]
+          }
+        }
+      },
+      "netnames": {
+        "$0$memwr$\\mem$Async-FIFO/FIFO_memory.v:27$60_ADDR[3:0]$63": {
+          "hide_name": 1,
+          "bits": [ 40, 41, 42, 43 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:26.5-27.52"
+          }
+        },
+        "$0$memwr$\\mem$Async-FIFO/FIFO_memory.v:27$60_DATA[7:0]$64": {
+          "hide_name": 1,
+          "bits": [ 32, 33, 34, 35, 36, 37, 38, 39 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:26.5-27.52"
+          }
+        },
+        "$0$memwr$\\mem$Async-FIFO/FIFO_memory.v:27$60_EN[7:0]$65": {
+          "hide_name": 1,
+          "bits": [ 31, 31, 31, 31, 31, 31, 31, 31 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:26.5-27.52"
+          }
+        },
+        "$logic_and$Async-FIFO/FIFO_memory.v:27$67_Y": {
+          "hide_name": 1,
+          "bits": [ 30 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:27.13-27.30"
+          }
+        },
+        "$logic_not$Async-FIFO/FIFO_memory.v:27$66_Y": {
+          "hide_name": 1,
+          "bits": [ 29 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:27.24-27.30"
+          }
+        },
+        "raddr": {
+          "hide_name": 0,
+          "bits": [ 22, 23, 24, 25 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:17.34-17.39"
+          }
+        },
+        "rdata": {
+          "hide_name": 0,
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:15.28-15.33"
+          }
+        },
+        "waddr": {
+          "hide_name": 0,
+          "bits": [ 18, 19, 20, 21 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:17.27-17.32"
+          }
+        },
+        "wclk": {
+          "hide_name": 0,
+          "bits": [ 28 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:18.27-18.31"
+          }
+        },
+        "wclk_en": {
+          "hide_name": 0,
+          "bits": [ 26 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:18.11-18.18"
+          }
+        },
+        "wdata": {
+          "hide_name": 0,
+          "bits": [ 10, 11, 12, 13, 14, 15, 16, 17 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:16.27-16.32"
+          }
+        },
+        "wfull": {
+          "hide_name": 0,
+          "bits": [ 27 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO_memory.v:18.20-18.25"
+          }
+        }
+      }
+    },
+    "$paramod\\rptr_empty\\ADDR_SIZE=s32'00000000000000000000000000000100": {
+      "attributes": {
+        "dynports": "00000000000000000000000000000001",
+        "hdlname": "rptr_empty",
+        "src": "Async-FIFO/rptr_empty.v:9.1-42.10"
+      },
+      "parameter_default_values": {
+        "ADDR_SIZE": "00000000000000000000000000000100"
+      },
+      "ports": {
+        "rempty": {
+          "direction": "output",
+          "bits": [ 2 ]
+        },
+        "raddr": {
+          "direction": "output",
+          "bits": [ 3, 4, 5, 6 ]
+        },
+        "rptr": {
+          "direction": "output",
+          "bits": [ 7, 8, 9, 10, 11 ]
+        },
+        "rq2_wptr": {
+          "direction": "input",
+          "bits": [ 12, 13, 14, 15, 16 ]
+        },
+        "rinc": {
+          "direction": "input",
+          "bits": [ 17 ]
+        },
+        "rclk": {
+          "direction": "input",
+          "bits": [ 18 ]
+        },
+        "rrst_n": {
+          "direction": "input",
+          "bits": [ 19 ]
+        }
+      },
+      "cells": {
+        "$add$Async-FIFO/rptr_empty.v:30$54": {
+          "hide_name": 1,
+          "type": "$add",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000101",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000101",
+            "Y_WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:30.24-30.47"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 3, 4, 5, 6, 20 ],
+            "B": [ 21, 22, 23, 24, 25 ],
+            "Y": [ 26, 27, 28, 29, 30 ]
+          }
+        },
+        "$and$Async-FIFO/rptr_empty.v:30$53": {
+          "hide_name": 1,
+          "type": "$and",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000101",
+            "Y_WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:30.32-30.46"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 17 ],
+            "B": [ 31, 32, 33, 34, 35 ],
+            "Y": [ 21, 22, 23, 24, 25 ]
+          }
+        },
+        "$eq$Async-FIFO/rptr_empty.v:34$57": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000101",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000101",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:34.26-34.48"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 36, 37, 38, 39, 40 ],
+            "B": [ 12, 13, 14, 15, 16 ],
+            "Y": [ 41 ]
+          }
+        },
+        "$not$Async-FIFO/rptr_empty.v:30$52": {
+          "hide_name": 1,
+          "type": "$not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:30.39-30.46"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2 ],
+            "Y": [ 31, 32, 33, 34, 35 ]
+          }
+        },
+        "$procdff$104": {
+          "hide_name": 1,
+          "type": "$adff",
+          "parameters": {
+            "ARST_POLARITY": "00000000000000000000000000000000",
+            "ARST_VALUE": "00000",
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:22.5-27.8"
+          },
+          "port_directions": {
+            "ARST": "input",
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "ARST": [ 19 ],
+            "CLK": [ 18 ],
+            "D": [ 36, 37, 38, 39, 40 ],
+            "Q": [ 7, 8, 9, 10, 11 ]
+          }
+        },
+        "$procdff$109": {
+          "hide_name": 1,
+          "type": "$adff",
+          "parameters": {
+            "ARST_POLARITY": "00000000000000000000000000000000",
+            "ARST_VALUE": "00000",
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:22.5-27.8"
+          },
+          "port_directions": {
+            "ARST": "input",
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "ARST": [ 19 ],
+            "CLK": [ 18 ],
+            "D": [ 26, 27, 28, 29, 30 ],
+            "Q": [ 3, 4, 5, 6, 20 ]
+          }
+        },
+        "$procdff$99": {
+          "hide_name": 1,
+          "type": "$adff",
+          "parameters": {
+            "ARST_POLARITY": "00000000000000000000000000000000",
+            "ARST_VALUE": "1",
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:36.5-41.8"
+          },
+          "port_directions": {
+            "ARST": "input",
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "ARST": [ 19 ],
+            "CLK": [ 18 ],
+            "D": [ 41 ],
+            "Q": [ 2 ]
+          }
+        },
+        "$xor$Async-FIFO/rptr_empty.v:31$56": {
+          "hide_name": 1,
+          "type": "$xor",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000100",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000101",
+            "Y_WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:31.25-31.51"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 27, 28, 29, 30 ],
+            "B": [ 26, 27, 28, 29, 30 ],
+            "Y": [ 36, 37, 38, 39, 40 ]
+          }
+        }
+      },
+      "netnames": {
+        "$and$Async-FIFO/rptr_empty.v:30$53_Y": {
+          "hide_name": 1,
+          "bits": [ 21, 22, 23, 24, 25 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:30.32-30.46"
+          }
+        },
+        "$not$Async-FIFO/rptr_empty.v:30$52_Y": {
+          "hide_name": 1,
+          "bits": [ 31, 32, 33, 34, 35 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:30.39-30.46"
+          }
+        },
+        "raddr": {
+          "hide_name": 0,
+          "bits": [ 3, 4, 5, 6 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:11.28-11.33"
+          }
+        },
+        "rbin": {
+          "hide_name": 0,
+          "bits": [ 3, 4, 5, 6, 20 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:17.23-17.27"
+          }
+        },
+        "rbin_next": {
+          "hide_name": 0,
+          "bits": [ 26, 27, 28, 29, 30 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:18.36-18.45"
+          }
+        },
+        "rclk": {
+          "hide_name": 0,
+          "bits": [ 18 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:14.17-14.21"
+          }
+        },
+        "rempty": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:10.16-10.22"
+          }
+        },
+        "rempty_val": {
+          "hide_name": 0,
+          "bits": [ 41 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:19.10-19.20"
+          }
+        },
+        "rgray_next": {
+          "hide_name": 0,
+          "bits": [ 36, 37, 38, 39, 40 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:18.24-18.34"
+          }
+        },
+        "rinc": {
+          "hide_name": 0,
+          "bits": [ 17 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:14.11-14.15"
+          }
+        },
+        "rptr": {
+          "hide_name": 0,
+          "bits": [ 7, 8, 9, 10, 11 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:12.31-12.35"
+          }
+        },
+        "rq2_wptr": {
+          "hide_name": 0,
+          "bits": [ 12, 13, 14, 15, 16 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:13.26-13.34"
+          }
+        },
+        "rrst_n": {
+          "hide_name": 0,
+          "bits": [ 19 ],
+          "attributes": {
+            "src": "Async-FIFO/rptr_empty.v:14.23-14.29"
+          }
+        }
+      }
+    },
+    "$paramod\\two_ff_sync\\SIZE=s32'00000000000000000000000000000101": {
+      "attributes": {
+        "dynports": "00000000000000000000000000000001",
+        "hdlname": "two_ff_sync",
+        "src": "Async-FIFO/two_ff_sync.v:9.1-24.10"
+      },
+      "parameter_default_values": {
+        "SIZE": "00000000000000000000000000000101"
+      },
+      "ports": {
+        "q2": {
+          "direction": "output",
+          "bits": [ 2, 3, 4, 5, 6 ]
+        },
+        "din": {
+          "direction": "input",
+          "bits": [ 7, 8, 9, 10, 11 ]
+        },
+        "clk": {
+          "direction": "input",
+          "bits": [ 12 ]
+        },
+        "rst_n": {
+          "direction": "input",
+          "bits": [ 13 ]
+        }
+      },
+      "cells": {
+        "$procdff$86": {
+          "hide_name": 1,
+          "type": "$adff",
+          "parameters": {
+            "ARST_POLARITY": "00000000000000000000000000000000",
+            "ARST_VALUE": "00000",
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/two_ff_sync.v:17.5-22.8"
+          },
+          "port_directions": {
+            "ARST": "input",
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "ARST": [ 13 ],
+            "CLK": [ 12 ],
+            "D": [ 14, 15, 16, 17, 18 ],
+            "Q": [ 2, 3, 4, 5, 6 ]
+          }
+        },
+        "$procdff$91": {
+          "hide_name": 1,
+          "type": "$adff",
+          "parameters": {
+            "ARST_POLARITY": "00000000000000000000000000000000",
+            "ARST_VALUE": "00000",
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/two_ff_sync.v:17.5-22.8"
+          },
+          "port_directions": {
+            "ARST": "input",
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "ARST": [ 13 ],
+            "CLK": [ 12 ],
+            "D": [ 7, 8, 9, 10, 11 ],
+            "Q": [ 14, 15, 16, 17, 18 ]
+          }
+        }
+      },
+      "netnames": {
+        "clk": {
+          "hide_name": 0,
+          "bits": [ 12 ],
+          "attributes": {
+            "src": "Async-FIFO/two_ff_sync.v:12.11-12.14"
+          }
+        },
+        "din": {
+          "hide_name": 0,
+          "bits": [ 7, 8, 9, 10, 11 ],
+          "attributes": {
+            "src": "Async-FIFO/two_ff_sync.v:11.22-11.25"
+          }
+        },
+        "q1": {
+          "hide_name": 0,
+          "bits": [ 14, 15, 16, 17, 18 ],
+          "attributes": {
+            "src": "Async-FIFO/two_ff_sync.v:15.20-15.22"
+          }
+        },
+        "q2": {
+          "hide_name": 0,
+          "bits": [ 2, 3, 4, 5, 6 ],
+          "attributes": {
+            "src": "Async-FIFO/two_ff_sync.v:10.27-10.29"
+          }
+        },
+        "rst_n": {
+          "hide_name": 0,
+          "bits": [ 13 ],
+          "attributes": {
+            "src": "Async-FIFO/two_ff_sync.v:12.16-12.21"
+          }
+        }
+      }
+    },
+    "$paramod\\wptr_full\\ADDR_SIZE=s32'00000000000000000000000000000100": {
+      "attributes": {
+        "dynports": "00000000000000000000000000000001",
+        "hdlname": "wptr_full",
+        "src": "Async-FIFO/wptr_full.v:9.1-48.10"
+      },
+      "parameter_default_values": {
+        "ADDR_SIZE": "00000000000000000000000000000100"
+      },
+      "ports": {
+        "wfull": {
+          "direction": "output",
+          "bits": [ 2 ]
+        },
+        "waddr": {
+          "direction": "output",
+          "bits": [ 3, 4, 5, 6 ]
+        },
+        "wptr": {
+          "direction": "output",
+          "bits": [ 7, 8, 9, 10, 11 ]
+        },
+        "wq2_rptr": {
+          "direction": "input",
+          "bits": [ 12, 13, 14, 15, 16 ]
+        },
+        "winc": {
+          "direction": "input",
+          "bits": [ 17 ]
+        },
+        "wclk": {
+          "direction": "input",
+          "bits": [ 18 ]
+        },
+        "wrst_n": {
+          "direction": "input",
+          "bits": [ 19 ]
+        }
+      },
+      "cells": {
+        "$add$Async-FIFO/wptr_full.v:30$42": {
+          "hide_name": 1,
+          "type": "$add",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000101",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000101",
+            "Y_WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:30.24-30.46"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 3, 4, 5, 6, 20 ],
+            "B": [ 21, 22, 23, 24, 25 ],
+            "Y": [ 26, 27, 28, 29, 30 ]
+          }
+        },
+        "$and$Async-FIFO/wptr_full.v:30$41": {
+          "hide_name": 1,
+          "type": "$and",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000101",
+            "Y_WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:30.32-30.45"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 17 ],
+            "B": [ 31, 32, 33, 34, 35 ],
+            "Y": [ 21, 22, 23, 24, 25 ]
+          }
+        },
+        "$eq$Async-FIFO/wptr_full.v:40$46": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000101",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000101",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:40.25-40.96"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 36, 37, 38, 39, 40 ],
+            "B": [ 12, 13, 14, 41, 42 ],
+            "Y": [ 43 ]
+          }
+        },
+        "$not$Async-FIFO/wptr_full.v:30$40": {
+          "hide_name": 1,
+          "type": "$not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:30.39-30.45"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2 ],
+            "Y": [ 31, 32, 33, 34, 35 ]
+          }
+        },
+        "$not$Async-FIFO/wptr_full.v:40$45": {
+          "hide_name": 1,
+          "type": "$not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:40.38-40.70"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 15, 16 ],
+            "Y": [ 41, 42 ]
+          }
+        },
+        "$procdff$114": {
+          "hide_name": 1,
+          "type": "$adff",
+          "parameters": {
+            "ARST_POLARITY": "00000000000000000000000000000000",
+            "ARST_VALUE": "0",
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:42.5-47.8"
+          },
+          "port_directions": {
+            "ARST": "input",
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "ARST": [ 19 ],
+            "CLK": [ 18 ],
+            "D": [ 43 ],
+            "Q": [ 2 ]
+          }
+        },
+        "$procdff$119": {
+          "hide_name": 1,
+          "type": "$adff",
+          "parameters": {
+            "ARST_POLARITY": "00000000000000000000000000000000",
+            "ARST_VALUE": "00000",
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:22.5-27.8"
+          },
+          "port_directions": {
+            "ARST": "input",
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "ARST": [ 19 ],
+            "CLK": [ 18 ],
+            "D": [ 36, 37, 38, 39, 40 ],
+            "Q": [ 7, 8, 9, 10, 11 ]
+          }
+        },
+        "$procdff$124": {
+          "hide_name": 1,
+          "type": "$adff",
+          "parameters": {
+            "ARST_POLARITY": "00000000000000000000000000000000",
+            "ARST_VALUE": "00000",
+            "CLK_POLARITY": "1",
+            "WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:22.5-27.8"
+          },
+          "port_directions": {
+            "ARST": "input",
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "ARST": [ 19 ],
+            "CLK": [ 18 ],
+            "D": [ 26, 27, 28, 29, 30 ],
+            "Q": [ 3, 4, 5, 6, 20 ]
+          }
+        },
+        "$xor$Async-FIFO/wptr_full.v:31$44": {
+          "hide_name": 1,
+          "type": "$xor",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000100",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000101",
+            "Y_WIDTH": "00000000000000000000000000000101"
+          },
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:31.25-31.51"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 27, 28, 29, 30 ],
+            "B": [ 26, 27, 28, 29, 30 ],
+            "Y": [ 36, 37, 38, 39, 40 ]
+          }
+        }
+      },
+      "netnames": {
+        "$and$Async-FIFO/wptr_full.v:30$41_Y": {
+          "hide_name": 1,
+          "bits": [ 21, 22, 23, 24, 25 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:30.32-30.45"
+          }
+        },
+        "$not$Async-FIFO/wptr_full.v:30$40_Y": {
+          "hide_name": 1,
+          "bits": [ 31, 32, 33, 34, 35 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:30.39-30.45"
+          }
+        },
+        "$not$Async-FIFO/wptr_full.v:40$45_Y": {
+          "hide_name": 1,
+          "bits": [ 41, 42 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:40.38-40.70"
+          }
+        },
+        "waddr": {
+          "hide_name": 0,
+          "bits": [ 3, 4, 5, 6 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:11.28-11.33"
+          }
+        },
+        "wbin": {
+          "hide_name": 0,
+          "bits": [ 3, 4, 5, 6, 20 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:17.23-17.27"
+          }
+        },
+        "wbin_next": {
+          "hide_name": 0,
+          "bits": [ 26, 27, 28, 29, 30 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:18.36-18.45"
+          }
+        },
+        "wclk": {
+          "hide_name": 0,
+          "bits": [ 18 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:14.17-14.21"
+          }
+        },
+        "wfull": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:10.16-10.21"
+          }
+        },
+        "wfull_val": {
+          "hide_name": 0,
+          "bits": [ 43 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:19.10-19.19"
+          }
+        },
+        "wgray_next": {
+          "hide_name": 0,
+          "bits": [ 36, 37, 38, 39, 40 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:18.24-18.34"
+          }
+        },
+        "winc": {
+          "hide_name": 0,
+          "bits": [ 17 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:14.11-14.15"
+          }
+        },
+        "wptr": {
+          "hide_name": 0,
+          "bits": [ 7, 8, 9, 10, 11 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:12.31-12.35"
+          }
+        },
+        "wq2_rptr": {
+          "hide_name": 0,
+          "bits": [ 12, 13, 14, 15, 16 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:13.26-13.34"
+          }
+        },
+        "wrst_n": {
+          "hide_name": 0,
+          "bits": [ 19 ],
+          "attributes": {
+            "src": "Async-FIFO/wptr_full.v:14.23-14.29"
+          }
+        }
+      }
+    },
+    "FIFO": {
+      "attributes": {
+        "dynports": "00000000000000000000000000000001",
+        "top": "00000000000000000000000000000001",
+        "src": "Async-FIFO/FIFO.v:11.1-68.10"
+      },
+      "parameter_default_values": {
+        "ASIZE": "00000000000000000000000000000100",
+        "DSIZE": "00000000000000000000000000001000"
+      },
+      "ports": {
+        "rdata": {
+          "direction": "output",
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9 ]
+        },
+        "wfull": {
+          "direction": "output",
+          "bits": [ 10 ]
+        },
+        "rempty": {
+          "direction": "output",
+          "bits": [ 11 ]
+        },
+        "wdata": {
+          "direction": "input",
+          "bits": [ 12, 13, 14, 15, 16, 17, 18, 19 ]
+        },
+        "winc": {
+          "direction": "input",
+          "bits": [ 20 ]
+        },
+        "wclk": {
+          "direction": "input",
+          "bits": [ 21 ]
+        },
+        "wrst_n": {
+          "direction": "input",
+          "bits": [ 22 ]
+        },
+        "rinc": {
+          "direction": "input",
+          "bits": [ 23 ]
+        },
+        "rclk": {
+          "direction": "input",
+          "bits": [ 24 ]
+        },
+        "rrst_n": {
+          "direction": "input",
+          "bits": [ 25 ]
+        }
+      },
+      "cells": {
+        "fifomem": {
+          "hide_name": 0,
+          "type": "$paramod$be1290108f2457d10005154092f37665c723e177\\FIFO_memory",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:38.33-46.6"
+          },
+          "port_directions": {
+            "raddr": "input",
+            "rdata": "output",
+            "waddr": "input",
+            "wclk": "input",
+            "wclk_en": "input",
+            "wdata": "input",
+            "wfull": "input"
+          },
+          "connections": {
+            "raddr": [ 26, 27, 28, 29 ],
+            "rdata": [ 2, 3, 4, 5, 6, 7, 8, 9 ],
+            "waddr": [ 30, 31, 32, 33 ],
+            "wclk": [ 21 ],
+            "wclk_en": [ 20 ],
+            "wdata": [ 12, 13, 14, 15, 16, 17, 18, 19 ],
+            "wfull": [ 10 ]
+          }
+        },
+        "rptr_empty": {
+          "hide_name": 0,
+          "type": "$paramod\\rptr_empty\\ADDR_SIZE=s32'00000000000000000000000000000100",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:48.25-56.6"
+          },
+          "port_directions": {
+            "raddr": "output",
+            "rclk": "input",
+            "rempty": "output",
+            "rinc": "input",
+            "rptr": "output",
+            "rq2_wptr": "input",
+            "rrst_n": "input"
+          },
+          "connections": {
+            "raddr": [ 26, 27, 28, 29 ],
+            "rclk": [ 24 ],
+            "rempty": [ 11 ],
+            "rinc": [ 23 ],
+            "rptr": [ 34, 35, 36, 37, 38 ],
+            "rq2_wptr": [ 39, 40, 41, 42, 43 ],
+            "rrst_n": [ 25 ]
+          }
+        },
+        "sync_r2w": {
+          "hide_name": 0,
+          "type": "$paramod\\two_ff_sync\\SIZE=s32'00000000000000000000000000000101",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:24.28-29.6"
+          },
+          "port_directions": {
+            "clk": "input",
+            "din": "input",
+            "q2": "output",
+            "rst_n": "input"
+          },
+          "connections": {
+            "clk": [ 21 ],
+            "din": [ 34, 35, 36, 37, 38 ],
+            "q2": [ 44, 45, 46, 47, 48 ],
+            "rst_n": [ 22 ]
+          }
+        },
+        "sync_w2r": {
+          "hide_name": 0,
+          "type": "$paramod\\two_ff_sync\\SIZE=s32'00000000000000000000000000000101",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:31.28-36.6"
+          },
+          "port_directions": {
+            "clk": "input",
+            "din": "input",
+            "q2": "output",
+            "rst_n": "input"
+          },
+          "connections": {
+            "clk": [ 24 ],
+            "din": [ 49, 50, 51, 52, 53 ],
+            "q2": [ 39, 40, 41, 42, 43 ],
+            "rst_n": [ 25 ]
+          }
+        },
+        "wptr_full": {
+          "hide_name": 0,
+          "type": "$paramod\\wptr_full\\ADDR_SIZE=s32'00000000000000000000000000000100",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:58.24-66.6"
+          },
+          "port_directions": {
+            "waddr": "output",
+            "wclk": "input",
+            "wfull": "output",
+            "winc": "input",
+            "wptr": "output",
+            "wq2_rptr": "input",
+            "wrst_n": "input"
+          },
+          "connections": {
+            "waddr": [ 30, 31, 32, 33 ],
+            "wclk": [ 21 ],
+            "wfull": [ 10 ],
+            "winc": [ 20 ],
+            "wptr": [ 49, 50, 51, 52, 53 ],
+            "wq2_rptr": [ 44, 45, 46, 47, 48 ],
+            "wrst_n": [ 22 ]
+          }
+        }
+      },
+      "netnames": {
+        "raddr": {
+          "hide_name": 0,
+          "bits": [ 26, 27, 28, 29 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:21.29-21.34"
+          }
+        },
+        "rclk": {
+          "hide_name": 0,
+          "bits": [ 24 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:18.17-18.21"
+          }
+        },
+        "rdata": {
+          "hide_name": 0,
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:13.24-13.29"
+          }
+        },
+        "rempty": {
+          "hide_name": 0,
+          "bits": [ 11 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:15.12-15.18"
+          }
+        },
+        "rinc": {
+          "hide_name": 0,
+          "bits": [ 23 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:18.11-18.15"
+          }
+        },
+        "rptr": {
+          "hide_name": 0,
+          "bits": [ 34, 35, 36, 37, 38 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:22.26-22.30"
+          }
+        },
+        "rq2_wptr": {
+          "hide_name": 0,
+          "bits": [ 39, 40, 41, 42, 43 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:22.42-22.50"
+          }
+        },
+        "rrst_n": {
+          "hide_name": 0,
+          "bits": [ 25 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:18.23-18.29"
+          }
+        },
+        "waddr": {
+          "hide_name": 0,
+          "bits": [ 30, 31, 32, 33 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:21.22-21.27"
+          }
+        },
+        "wclk": {
+          "hide_name": 0,
+          "bits": [ 21 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:17.17-17.21"
+          }
+        },
+        "wdata": {
+          "hide_name": 0,
+          "bits": [ 12, 13, 14, 15, 16, 17, 18, 19 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:16.23-16.28"
+          }
+        },
+        "wfull": {
+          "hide_name": 0,
+          "bits": [ 10 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:14.12-14.17"
+          }
+        },
+        "winc": {
+          "hide_name": 0,
+          "bits": [ 20 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:17.11-17.15"
+          }
+        },
+        "wptr": {
+          "hide_name": 0,
+          "bits": [ 49, 50, 51, 52, 53 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:22.20-22.24"
+          }
+        },
+        "wq2_rptr": {
+          "hide_name": 0,
+          "bits": [ 44, 45, 46, 47, 48 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:22.32-22.40"
+          }
+        },
+        "wrst_n": {
+          "hide_name": 0,
+          "bits": [ 22 ],
+          "attributes": {
+            "src": "Async-FIFO/FIFO.v:17.23-17.29"
+          }
+        }
+      }
+    }
+  }
+}

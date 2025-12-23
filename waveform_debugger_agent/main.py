@@ -49,17 +49,17 @@ def main():
         epilog="""
 Examples:
   python main.py -f "wfull never asserted. Expected wfull=1 at t=325000"
-  python main.py -f "rempty stuck at 1" --vcd ../Verilog_Code/fifo_wave.vcd
+  python main.py -f "rempty stuck at 1" --vcd ../Async-FIFO/fifo_wave.vcd
         """
     )
     parser.add_argument("--failure", "-f", type=str, required=True,
                         help="Failure description or message")
     parser.add_argument("--vcd", type=str,
-                        default="../Verilog_Code/fifo_wave.vcd",
+                        default="../Async-FIFO/fifo_wave.vcd",
                         help="Path to VCD file")
     parser.add_argument("--netlist", type=str,
-                        default="../connectivity.json",
-                        help="Path to connectivity.json")
+                        default="../Async-FIFO/async_fifo_connectivity.json",
+                        help="Path to async_fifo_connectivity.json")
 
     args = parser.parse_args()
 
