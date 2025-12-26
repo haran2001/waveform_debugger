@@ -20,6 +20,7 @@ cd yosys && make && sudo make install
 
 ```bash
 yosys -p "read_verilog Verilog_Code/*.v; prep -top FIFO; write_json connectivity.json"
+yosys -p "read_verilog Async-FIFO/*.v; prep -top FIFO; write_json async_fifo_connectivity.json"
 ```
 
 ## Step-by-Step Breakdown
@@ -95,3 +96,61 @@ Specify the correct top with `-top <module_name>`.
 
 ### Syntax errors
 Run `read_verilog -sv` for SystemVerilog syntax support.
+
+---
+
+# Running Async-FIFO Testbench
+
+## Available Testbenches
+
+| File | Purpose |
+|------|---------|
+| `FIFO_tb.v` | Basic functional tests |
+| `FIFO_tb_wave.v` | Tests with VCD waveform output |
+
+## Using Icarus Verilog (iverilog)
+
+### Compile and run with VCD output
+
+```bash
+cd /Users/hari/Desktop/waveform_debugger/Async-FIFO
+
+# Compile all Verilog files with the waveform testbench
+iverilog -o fifo_wave FIFO.v FIFO_memory.v rptr_empty.v wptr_full.v two_ff_sync.v FIFO_tb_wave.v
+
+# Run simulation (generates fifo_wave.vcd)
+vvp fifo_wave
+```
+
+### View waveforms (optional)
+
+```bash
+# Using GTKWave
+gtkwave fifo_wave.vcd
+```
+
+### Using the Basic Testbench
+
+```bash
+# Compile with basic testbench
+iverilog -o fifo_test FIFO.v FIFO_memory.v rptr_empty.v wptr_full.v two_ff_sync.v FIFO_tb.v
+
+# Run
+vvp fifo_test
+```
+
+## What the Waveform Testbench Does
+
+| Test | Description |
+|------|-------------|
+| **TEST 1** | Write 10 random values while simultaneously reading (`rinc=1`) |
+| **TEST 2** | Fill the FIFO (write DEPTH+3 values with `winc=1`, `rinc=0`) - triggers `wfull` |
+| **TEST 3** | Empty the FIFO (read DEPTH+3 times with `rinc=1`, `winc=0`) - triggers `rempty` |
+
+## Quick Run (Pre-compiled)
+
+If binaries already exist:
+
+```bash
+vvp /Users/hari/Desktop/waveform_debugger/Async-FIFO/fifo_wave
+```
