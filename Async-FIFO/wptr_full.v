@@ -38,6 +38,10 @@ module wptr_full #(parameter ADDR_SIZE = 4)(
     // (wg_next[ADDR_SIZE-2:0]==wq2_rptr[ADDR_SIZE-2:0]));
     //------------------------------------------------------------------
     assign wfull_val = (wgray_next=={~wq2_rptr[ADDR_SIZE:ADDR_SIZE-1], wq2_rptr[ADDR_SIZE-2:0]});
+    //assign wfull_val = wq2_rptr;
+
+
+
 
     always @(posedge wclk or negedge wrst_n) begin
         if (!wrst_n)            // Reset the full flag

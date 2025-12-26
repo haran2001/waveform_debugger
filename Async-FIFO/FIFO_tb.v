@@ -69,12 +69,82 @@ module FIFO_tb();
             #10;
         end
 
+        // Add after TEST CASE 2 (around line 70), before TEST CASE 3:
+
+        // TEST CASE 2b: Verify wfull assertion
+        #20;  // Wait for signals to settle
+        if (!wfull) begin
+            $display("FAIL: wfull never asserted. Expected wfull=1 at t=%0t after writing %0d entries", $time, DEPTH);
+            $display("      FIFO should be full but wfull=%b", wfull);
+            $fatal;
+        end else begin
+            $display("PASS: wfull correctly asserted at t=%0t", $time);
+        end
+
+        // Try one more write while full - should be blocked
+        wdata = 8'hFF;
+        winc = 1;
+        #10;
+        winc = 0;
+        #10;
+
+        // Verify wfull still asserted (no overflow occurred)
+        if (!wfull) begin
+            $display("FAIL: wfull deasserted after write attempt at t=%0t. Possible overflow.", $time);
+            $fatal;
+        end
+
         // TEST CASE 3: Read data from empty FIFO and try to read more data
         winc = 0;
         rinc = 1;
         for (i = 0; i < DEPTH + 3; i = i + 1) begin
             #20;
         end
+
+        // TEST CASE 4: Strict wfull timing verification
+        $display("\n--- TEST CASE 4: wfull timing verification ---");
+
+        // Reset FIFO first
+        wrst_n = 0; rrst_n = 0;
+        #40;
+        wrst_n = 1; rrst_n = 1;
+        #40;
+
+        rinc = 0;
+        winc = 0;
+
+        // Verify wfull is 0 when empty
+        if (wfull) begin
+            $display("FAIL: wfull=1 after reset at t=%0t. Expected wfull=0 for empty FIFO", $time);
+            $fatal;
+        end
+
+        // Fill FIFO one entry at a time, checking wfull each time
+        for (i = 0; i < DEPTH; i = i + 1) begin
+            // wfull should be 0 before FIFO is full
+            if (wfull) begin
+                $display("FAIL: wfull asserted too early at t=%0t after %0d writes. Expected wfull=0 until %0d writes.", 
+                        $time, i, DEPTH);
+                $fatal;
+            end
+            
+            wdata = i; // Use index as data for easy tracking
+            winc = 1;
+            #10;
+            winc = 0;
+            #10;
+        end
+
+        // Now FIFO has exactly DEPTH entries - wfull MUST be 1
+        #20; // Allow for synchronizer delay
+        if (!wfull) begin
+            $display("FAIL: wfull not asserted at t=%0t after %0d writes. wfull=%b, expected=1", 
+                    $time, DEPTH, wfull);
+            $fatal;
+        end
+
+        $display("PASS: wfull correctly asserted after exactly %0d writes at t=%0t", DEPTH, $time);
+
 
         $finish;
     end
