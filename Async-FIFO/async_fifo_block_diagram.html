@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Async FIFO Block Diagram</title>
+    <script src="https://unpkg.com/@viz-js/viz@3.2.4/lib/viz-standalone.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; padding: 20px; }
+        .container { background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); padding: 30px; max-width: 100%; }
+        h1 { color: #333; margin-bottom: 10px; font-weight: 600; }
+        .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
+        .controls { margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+        button { padding: 10px 20px; border: none; border-radius: 8px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
+        #diagram { border: 1px solid #eee; border-radius: 8px; padding: 20px; background: #fafafa; overflow: auto; min-height: 500px; }
+        #diagram svg { max-width: 100%; height: auto; }
+        .legend { margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; display: flex; gap: 25px; flex-wrap: wrap; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+        .legend-line { width: 30px; height: 3px; }
+        .loading { text-align: center; padding: 40px; color: #666; }
+        .error { color: #d32f2f; padding: 20px; background: #ffebee; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Async FIFO Block Diagram</h1>
+        <p class="subtitle">Generated with RTLViz | ⚠️ RtlViz can make mistakes, so double-check it</p>
+        
+        <div class="controls">
+            <button onclick="zoomIn()">🔍 Zoom In</button>
+            <button onclick="zoomOut()">🔍 Zoom Out</button>
+            <button onclick="resetZoom()">↺ Reset</button>
+            <button onclick="downloadSVG()">💾 Download SVG</button>
+        </div>
+        
+        <div id="diagram">
+            <div class="loading">⏳ Rendering diagram with Viz.js...</div>
+        </div>
+        
+        <div class="legend">
+            <strong>Legend:</strong>
+            <div class="legend-item">
+                <span class="legend-line" style="background: black;"></span>
+                <span>Data Path</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-line" style="background: transparent; border-top: 2px dashed #1565C0;"></span>
+                <span>Control Signal</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const dotSource = `digraph AsyncFIFO {
+    rankdir=LR;
+    splines=ortho;
+    nodesep=0.8;
+    ranksep=1.2;
+    bgcolor="#1a1a2e";
+    
+    // Graph styling
+    node [fontname="Arial", fontsize=12, style="filled,rounded"];
+    edge [fontname="Arial", fontsize=10, color="#4a9eff"];
+    
+    // Define clusters for the two clock domains
+    subgraph cluster_write_domain {
+        label="Write Clock Domain (wclk)";
+        labeljust="l";
+        fontsize=14;
+        fontcolor="#ff6b6b";
+        style="dashed,rounded";
+        color="#ff6b6b";
+        bgcolor="#1a1a2e";
+        
+        // Write domain inputs
+        wclk [label="wclk", shape=diamond, fillcolor="#ff6b6b", fontcolor="white", width=1.0];
+        wrst_n [label="wrst_n", shape=diamond, fillcolor="#ff6b6b", fontcolor="white", width=1.0];
+        winc [label="winc", shape=diamond, fillcolor="#ff6b6b", fontcolor="white", width=1.0];
+        wdata [label="wdata\\n[DSIZE-1:0]", shape=parallelogram, fillcolor="#c7a7ff", fontcolor="black", width=1.5];
+        
+        // wptr_full module
+        wptr_full [label="wptr_full\\n━━━━━━━━━━━\\n• Binary counter (wbin)\\n• Gray code converter\\n• Full flag logic\\n• waddr generation", shape=box, fillcolor="#4ecdc4", fontcolor="black", width=2.5, height=1.5];
+        
+        // sync_r2w (synchronizer for read pointer to write domain)
+        sync_r2w [label="sync_r2w\\n(two_ff_sync)\\n━━━━━━━━━━━\\n• 2-stage FF\\n• CDC for rptr", shape=box, fillcolor="#ffe66d", fontcolor="black", width=2.0, height=1.2];
+        
+        // Write domain outputs
+        wfull [label="wfull", shape=parallelogram, fillcolor="#ff6b6b", fontcolor="white", width=1.2];
+    }
+    
+    subgraph cluster_read_domain {
+        label="Read Clock Domain (rclk)";
+        labeljust="l";
+        fontsize=14;
+        fontcolor="#45b7d1";
+        style="dashed,rounded";
+        color="#45b7d1";
+        bgcolor="#1a1a2e";
+        
+        // Read domain inputs
+        rclk [label="rclk", shape=diamond, fillcolor="#45b7d1", fontcolor="white", width=1.0];
+        rrst_n [label="rrst_n", shape=diamond, fillcolor="#45b7d1", fontcolor="white", width=1.0];
+        rinc [label="rinc", shape=diamond, fillcolor="#45b7d1", fontcolor="white", width=1.0];
+        
+        // rptr_empty module
+        rptr_empty [label="rptr_empty\\n━━━━━━━━━━━\\n• Binary counter (rbin)\\n• Gray code converter\\n• Empty flag logic\\n• raddr generation", shape=box, fillcolor="#4ecdc4", fontcolor="black", width=2.5, height=1.5];
+        
+        // sync_w2r (synchronizer for write pointer to read domain)
+        sync_w2r [label="sync_w2r\\n(two_ff_sync)\\n━━━━━━━━━━━\\n• 2-stage FF\\n• CDC for wptr", shape=box, fillcolor="#ffe66d", fontcolor="black", width=2.0, height=1.2];
+        
+        // Read domain outputs
+        rempty [label="rempty", shape=parallelogram, fillcolor="#45b7d1", fontcolor="white", width=1.2];
+        rdata [label="rdata\\n[DSIZE-1:0]", shape=parallelogram, fillcolor="#c7a7ff", fontcolor="black", width=1.5];
+    }
+    
+    // FIFO Memory (shared between domains)
+    subgraph cluster_memory {
+        label="Dual-Port Memory";
+        labeljust="c";
+        fontsize=14;
+        fontcolor="#96f550";
+        style="rounded";
+        color="#96f550";
+        bgcolor="#2d2d44";
+        
+        fifomem [label="FIFO_memory\\n━━━━━━━━━━━━━\\nmem[0:DEPTH-1]\\n[DATA_SIZE-1:0]\\n━━━━━━━━━━━━━\\nDEPTH = 2^ASIZE\\n(default: 16 entries)", shape=box3d, fillcolor="#96f550", fontcolor="black", width=2.8, height=1.8];
+    }
+    
+    // Internal signals (invisible nodes for routing)
+    waddr [label="waddr\\n[ASIZE-1:0]", shape=ellipse, fillcolor="#888888", fontcolor="white", width=1.2, height=0.6];
+    raddr [label="raddr\\n[ASIZE-1:0]", shape=ellipse, fillcolor="#888888", fontcolor="white", width=1.2, height=0.6];
+    wptr [label="wptr\\n[ASIZE:0]\\n(Gray)", shape=ellipse, fillcolor="#ffa07a", fontcolor="black", width=1.2, height=0.8];
+    rptr [label="rptr\\n[ASIZE:0]\\n(Gray)", shape=ellipse, fillcolor="#ffa07a", fontcolor="black", width=1.2, height=0.8];
+    wq2_rptr [label="wq2_rptr\\n[ASIZE:0]", shape=ellipse, fillcolor="#dda0dd", fontcolor="black", width=1.2, height=0.6];
+    rq2_wptr [label="rq2_wptr\\n[ASIZE:0]", shape=ellipse, fillcolor="#dda0dd", fontcolor="black", width=1.2, height=0.6];
+    
+    // Write domain connections
+    wclk -> wptr_full [color="#ff6b6b"];
+    wrst_n -> wptr_full [color="#ff6b6b"];
+    winc -> wptr_full [color="#ff6b6b"];
+    wptr_full -> wfull [color="#ff6b6b", penwidth=2];
+    wptr_full -> waddr [color="#888888"];
+    wptr_full -> wptr [color="#ffa07a", penwidth=2, label="Gray\\nCode"];
+    
+    // Read domain connections
+    rclk -> rptr_empty [color="#45b7d1"];
+    rrst_n -> rptr_empty [color="#45b7d1"];
+    rinc -> rptr_empty [color="#45b7d1"];
+    rptr_empty -> rempty [color="#45b7d1", penwidth=2];
+    rptr_empty -> raddr [color="#888888"];
+    rptr_empty -> rptr [color="#ffa07a", penwidth=2, label="Gray\\nCode"];
+    
+    // Memory connections
+    waddr -> fifomem [color="#888888", label="Write\\nAddr"];
+    raddr -> fifomem [color="#888888", label="Read\\nAddr"];
+    wdata -> fifomem [color="#c7a7ff", penwidth=2, label="Write\\nData"];
+    fifomem -> rdata [color="#c7a7ff", penwidth=2, label="Read\\nData"];
+    wfull -> fifomem [color="#ff6b6b", style="dashed", label="Write\\nEnable"];
+    winc -> fifomem [color="#ff6b6b", style="dashed"];
+    wclk -> fifomem [color="#ff6b6b"];
+    
+    // CDC synchronization paths (cross-domain)
+    rptr -> sync_r2w [color="#ffa07a", penwidth=2, style="bold"];
+    sync_r2w -> wq2_rptr [color="#dda0dd", penwidth=2];
+    wq2_rptr -> wptr_full [color="#dda0dd", style="dashed", label="Synced\\nrptr"];
+    wclk -> sync_r2w [color="#ff6b6b"];
+    wrst_n -> sync_r2w [color="#ff6b6b"];
+    
+    wptr -> sync_w2r [color="#ffa07a", penwidth=2, style="bold"];
+    sync_w2r -> rq2_wptr [color="#dda0dd", penwidth=2];
+    rq2_wptr -> rptr_empty [color="#dda0dd", style="dashed", label="Synced\\nwptr"];
+    rclk -> sync_w2r [color="#45b7d1"];
+    rrst_n -> sync_w2r [color="#45b7d1"];
+    
+    // Legend
+    subgraph cluster_legend {
+        label="Legend";
+        labeljust="l";
+        fontsize=12;
+        fontcolor="white";
+        style="rounded";
+        color="white";
+        bgcolor="#2d2d44";
+        
+        leg1 [label="◆ Control Signals", shape=plaintext, fontcolor="#ff6b6b"];
+        leg2 [label="▬ Data Signals", shape=plaintext, fontcolor="#c7a7ff"];
+        leg3 [label="○ Gray-coded Pointers", shape=plaintext, fontcolor="#ffa07a"];
+        leg4 [label="--- CDC Path", shape=plaintext, fontcolor="#dda0dd"];
+        leg5 [label="□ Processing Modules", shape=plaintext, fontcolor="#4ecdc4"];
+        leg6 [label="□ Synchronizers", shape=plaintext, fontcolor="#ffe66d"];
+        
+        leg1 -> leg2 -> leg3 -> leg4 -> leg5 -> leg6 [style=invis];
+    }
+}`;
+        let scale = 1;
+        let svgContent = '';
+        
+        async function renderDiagram() {
+            try {
+                const viz = await Viz.instance();
+                const svg = viz.renderSVGElement(dotSource);
+                svgContent = svg.outerHTML;
+                document.getElementById('diagram').innerHTML = svgContent;
+            } catch (error) {
+                document.getElementById('diagram').innerHTML = 
+                    '<div class="error">❌ Error rendering diagram: ' + error.message + '</div>';
+                console.error(error);
+            }
+        }
+        
+        function zoomIn() { scale *= 1.2; applyZoom(); }
+        function zoomOut() { scale *= 0.8; applyZoom(); }
+        function resetZoom() { scale = 1; applyZoom(); }
+        
+        function applyZoom() {
+            const svg = document.querySelector('#diagram svg');
+            if (svg) {
+                svg.style.transform = `scale(${scale})`;
+                svg.style.transformOrigin = 'top left';
+            }
+        }
+        
+        function downloadSVG() {
+            if (svgContent) {
+                const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'async_fifo_block_diagram_diagram.svg';
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+        
+        renderDiagram();
+    </script>
+</body>
+</html>

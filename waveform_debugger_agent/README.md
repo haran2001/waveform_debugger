@@ -245,3 +245,15 @@ Sample wfull on negedge wclk or add #1 delay after posedge.
 ## License
 
 MIT
+
+
+Failure: "wfull never asserted, data overflow"
+
+Agent should:
+1. find_signals("wfull") → locate wfull
+2. get_value("wfull", time_of_overflow) → sees 0 when should be 1
+3. backward_trace("wptr_full", "wfull") → traces to wfull_val
+4. find_driver("wptr_full", "wfull_val") → sees comparison logic
+5. Identify: "wfull_val comparison missing MSB inversion"
+
+Root cause: wptr_full.v:40 - full detection logic

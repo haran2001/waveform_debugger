@@ -1,0 +1,7 @@
+{
+  "servers": {
+    "rtlviz": {
+      "command": "rtlviz-server"
+    }
+  }
+}

@@ -31,7 +31,8 @@ module FIFO_tb_wave();
     always #10 rclk = ~rclk;
     
     initial begin
-        $dumpfile("fifo_wave.vcd");
+        //$dumpfile("fifo_wave.vcd");
+        $dumpfile("fifo_wave_bug.vcd");
         $dumpvars(0, FIFO_tb_wave);
         
         wclk = 0; rclk = 0;

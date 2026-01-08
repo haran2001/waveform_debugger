@@ -55,7 +55,7 @@ Examples:
     parser.add_argument("--failure", "-f", type=str, required=True,
                         help="Failure description or message")
     parser.add_argument("--vcd", type=str,
-                        default="../Async-FIFO/fifo_wave.vcd",
+                        default="../Async-FIFO/fifo_wave_bug.vcd",
                         help="Path to VCD file")
     parser.add_argument("--netlist", type=str,
                         default="../Async-FIFO/async_fifo_connectivity.json",

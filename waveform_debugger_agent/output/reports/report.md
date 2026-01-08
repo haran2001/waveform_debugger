@@ -1,28 +1,57 @@
-# Debug Report: wfull Assertion Failure
+# Debug Report: FIFO Data Overflow
 
-## Summary
-The investigation found that the `wfull` signal behaves correctly according to the design logic, asserting high at `t=325000`. The failure reported ("wfull never asserted") is caused by the testbench sampling the signal at the clock edge before the new value propagates (Race condition/Sampling issue).
+## Root Cause Summary
+The testbench fails to respect the `wfull` (write full) flag, causing a data overflow.
+Specifically, the testbench enters a phase where it stops reading (`rinc=0`) but continues to write blindly for 11 cycles, exceeding the FIFO depth of 8.
 
-## Root Cause Analysis
-The FIFO logic is designed with a registered `wfull` output.
-- **Design Behavior:** `wfull` is updated on the rising edge of `wclk`.
-- **Timing at Failure:**
-    - At `t=315000` (cycle N-1): `wbin` updates to 14. The combinational "next" logic detects that the *next* write (to 15) will make the FIFO full (Depth 8, Read Ptr 7). `wfull_val` (next state) goes high.
-    - At `t=325000` (cycle N): `wclk` rises. The flip-flop for `wfull` captures `wfull_val` (1) and transitions `wfull` from 0 to 1.
-- **Testbench Issue:** The testbench expects `wfull=1` *at* `t=325000`. If the check is performed synchronously on the clock edge (e.g., `@(posedge wclk)`), it samples the value *before* the update (which is 0).
+The user's observation "wfull never asserted" is incorrect; the signal **does** assert at time 325,000, but the testbench continues to drive `winc` high for several more cycles, ignoring the flag.
 
-## Signal Trace
+## Detailed Trace Analysis
+
+1.  **Reset Phase (0 - 80,000):**
+    *   System is in reset (`wrst_n=1` -> `0` -> `1`).
+    *   Reset is effectively released at time 80,000.
+
+2.  **Normal Operation Phase (80,000 - 280,000):**
+    *   Writes (`winc`) and Reads (`rinc`) are both active.
+    *   Rates are balanced (one operation every 20,000 time units).
+    *   Loop variable `i` counts 0 to 9.
+
+3.  **Overflow Phase (280,000 - 390,000):**
+    *   **280,000:** Reads stop (`rinc` goes to 0). Writes continue.
+    *   **325,000:** FIFO fills up. **`wfull` asserts (goes to 1).**
+    *   **325,000 - 390,000:** `wfull` remains high, but `winc` continues to toggle (is asserted).
+    *   Loop variable `i` counts 0 to 10 (11 writes), ignoring the full state.
+    *   The testbench attempts to write to a full FIFO multiple times, triggering the "data overflow" error.
+
+## Signal Evidence
 | Time | Signal | Value | Note |
 |---|---|---|---|
-| 315000 | `wclk` | 1 (Rise) | Write to wbin=14 |
-| 315000 | `wfull_val` | 1 | Full condition detected for next cycle |
-| 315000 | `wfull` | 0 | Latches previous val (0) |
-| 325000 | `wclk` | 1 (Rise) | Write to wbin=15 |
-| 325000 | `wfull` | **1** | Latches wfull_val (1) - **Transitions High Here** |
+| 280,000 | `rinc` | 0 | Reads stop |
+| 280,000 | `winc` | 1 | Writes continue (start of loop) |
+| 325,000 | `wfull` | **1** | **FIFO indicates FULL** |
+| 335,000 | `winc` | 1 | Testbench writes anyway (Overflow) |
+| 345,000 | `winc` | 1 | Testbench writes anyway (Overflow) |
+| 390,000 | `winc` | 0 | Loop finishes |
 
-## Recommendation
-The FIFO design is functioning correctly (Full flag asserts when occupancy reaches 8).
-To fix the testbench failure, adjust the sampling logic:
-1.  **Sample on Negedge:** Check `wfull` on the falling edge of `wclk`.
-2.  **Add Delay:** Wait for a small delay after the clock edge before checking.
-3.  **Check Combinational:** If zero-latency full detection is required (unlikely for Async FIFO), check `wfull_val`.
+## Recommended Fix
+Modify the testbench write loop to check `wfull` before asserting `winc`.
+
+**Current Logic (Inferred):**
+```verilog
+for (i = 0; i < 11; i = i + 1) begin
+    @(posedge wclk);
+    winc = 1; // Blind write
+    // ...
+end
+```
+
+**Corrected Logic:**
+```verilog
+for (i = 0; i < 11; i = i + 1) begin
+    @(posedge wclk);
+    while (wfull) @(posedge wclk); // Wait if full
+    winc = 1;
+    // ...
+end
+```

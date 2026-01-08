@@ -1,10 +1,5 @@
 """VCD parsing tools for debug agent."""
-import sys
-import os
-
-# Add waveform_debugger to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'waveform_debugger'))
-from vcd_parser import VCDParser
+from .vcd_parser import VCDParser
 
 _parser = None
 

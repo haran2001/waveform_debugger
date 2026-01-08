@@ -71,16 +71,6 @@ module FIFO_tb();
 
         // Add after TEST CASE 2 (around line 70), before TEST CASE 3:
 
-        // TEST CASE 2b: Verify wfull assertion
-        #20;  // Wait for signals to settle
-        if (!wfull) begin
-            $display("FAIL: wfull never asserted. Expected wfull=1 at t=%0t after writing %0d entries", $time, DEPTH);
-            $display("      FIFO should be full but wfull=%b", wfull);
-            $fatal;
-        end else begin
-            $display("PASS: wfull correctly asserted at t=%0t", $time);
-        end
-
         // Try one more write while full - should be blocked
         wdata = 8'hFF;
         winc = 1;

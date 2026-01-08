@@ -1,0 +1,8 @@
+{
+    "mcpServers": {
+      "rtlviz": {
+        "command": "/opt/anaconda3/envs/myenv/bin/rtlviz-server"
+      }
+    }
+  }
+  
